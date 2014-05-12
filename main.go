@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
+	"github.com/exercism/cli/api"
+	"github.com/exercism/cli/assignments"
 	"github.com/exercism/cli/configuration"
 )
 
@@ -15,7 +17,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "exercism"
 	app.Usage = "A command line tool to interact with http://exercism.io"
-	app.Version = VERSION
+	app.Version = api.VERSION
 	app.Flags = []cli.Flag{
 		cli.StringFlag{"config, c", configuration.Filename(configuration.HomeDir()), "path to config file"},
 	}
@@ -37,7 +39,7 @@ func main() {
 					fmt.Println("Are you sure you are logged in? Please login again.")
 					return
 				}
-				currentAssignments, err := FetchAssignments(config, FetchEndpoints["current"])
+				currentAssignments, err := api.FetchAssignments(config, api.FetchEndpoints["current"])
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -74,14 +76,14 @@ func main() {
 						return
 					}
 				}
-				assignments, err := FetchAssignments(config, FetchEndpoints["demo"])
+				assnmts, err := api.FetchAssignments(config, api.FetchEndpoints["demo"])
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
 
-				for _, a := range assignments {
-					err := SaveAssignment(config.ExercismDirectory, a)
+				for _, a := range assnmts {
+					err := assignments.Save(config.ExercismDirectory, a)
 					if err != nil {
 						fmt.Println(err)
 					}
@@ -116,13 +118,13 @@ func main() {
 					}
 				}
 
-				assignments, err := FetchAssignments(config, FetchEndpoint(c.Args()))
+				assnmts, err := api.FetchAssignments(config, api.FetchEndpoint(c.Args()))
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
 
-				if len(assignments) == 0 {
+				if len(assnmts) == 0 {
 					noAssignmentMessage := "No assignments found"
 					if argCount == 2 {
 						fmt.Printf("%s for %s - %s\n", noAssignmentMessage, c.Args()[0], c.Args()[1])
@@ -134,8 +136,8 @@ func main() {
 					return
 				}
 
-				for _, a := range assignments {
-					err := SaveAssignment(config.ExercismDirectory, a)
+				for _, a := range assnmts {
+					err := assignments.Save(config.ExercismDirectory, a)
 					if err != nil {
 						fmt.Println(err)
 					}
@@ -169,7 +171,7 @@ func main() {
 		{
 			Name:      "restore",
 			ShortName: "r",
-			Usage:     "Restore completed and current assignments from exercism.io",
+			Usage:     "Restore completed and current assnmts from exercism.io",
 			Description: "Restore will pull the latest revisions of exercises that have already been " +
 				"submitted. It will *not* overwrite existing files.  If you have made changes " +
 				"to a file and have not submitted it, and you're trying to restore the last " +
@@ -181,14 +183,14 @@ func main() {
 					return
 				}
 
-				assignments, err := FetchAssignments(config, FetchEndpoints["restore"])
+				assnmts, err := api.FetchAssignments(config, api.FetchEndpoints["restore"])
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
 
-				for _, a := range assignments {
-					err := SaveAssignment(config.ExercismDirectory, a)
+				for _, a := range assnmts {
+					err := assignments.Save(config.ExercismDirectory, a)
 					if err != nil {
 						fmt.Println(err)
 					}
@@ -239,7 +241,7 @@ func main() {
 					return
 				}
 
-				response, err := SubmitAssignment(config, filename, code)
+				response, err := api.SubmitAssignment(config, filename, code)
 				if err != nil {
 					fmt.Printf("There was an issue with your submission: %v\n", err)
 					return
@@ -261,7 +263,7 @@ func main() {
 					return
 				}
 
-				response, err := UnsubmitAssignment(config)
+				response, err := api.UnsubmitAssignment(config)
 				if err != nil {
 					fmt.Println(err)
 					return

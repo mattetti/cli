@@ -1,4 +1,4 @@
-package main
+package assignments
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ type Assignment struct {
 	IsFresh bool `json:"fresh"`
 }
 
-func SaveAssignment(dir string, a Assignment) (err error) {
+func Save(dir string, a Assignment) (err error) {
 	root := fmt.Sprintf("%s/%s/%s", dir, a.Track, a.Slug)
 
 	for name, text := range a.Files {

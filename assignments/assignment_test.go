@@ -1,4 +1,4 @@
-package main
+package assignments
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ func TestSavingAssignment(t *testing.T) {
 		},
 	}
 
-	err = SaveAssignment(tmpDir, assignment)
+	err = Save(tmpDir, assignment)
 	assert.NoError(t, err)
 
 	readme, err := ioutil.ReadFile(tmpDir + "/ruby/bob/README.md")

@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/exercism/cli/assignments"
 	"github.com/exercism/cli/configuration"
 )
 
@@ -36,7 +37,10 @@ type submitRequest struct {
 	Path string `json:"path"`
 }
 
-func FetchAssignments(config configuration.Config, path string) (as []Assignment, err error) {
+func FetchAssignments(config configuration.Config,
+	path string) (
+	as []assignments.Assignment,
+	err error) {
 	url := fmt.Sprintf("%s%s?key=%s", config.Hostname, path, config.ApiKey)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -72,7 +76,7 @@ func FetchAssignments(config configuration.Config, path string) (as []Assignment
 	}
 
 	var fr struct {
-		Assignments []Assignment
+		Assignments []assignments.Assignment
 	}
 
 	err = json.Unmarshal(body, &fr)
