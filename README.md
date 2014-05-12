@@ -19,13 +19,19 @@ If that throws an error, try ```brew install go --cross-compile-common --with-ll
 
 Development
 ===========
-1. `cd $GOPATH`
-1. git clone https://github.com/exercism/cli src/github.com/exercism/cli
-1. cd src/github.com/exercism/cli
-1. go get
-1. go get github.com/levicook/glitch
-1. go install github.com/levicook/glitch
+1. Fork the repo on GitHub
+1. clone the repo: `go get github.com/<your username>/cli`
+1. create an exercism dir in `GOPATH` `mkdir $GOPATH/src/github.com/exercism`
+1. move your forked repo so you don't have to change the import statement `mv $GOPATH/src/github.com/<your username>/cli/ $GOPATH/src/github.com/exercism/cli`
+1. Fetch the dependencies `go get ./...`
+1. Build and start: `go install && cli`
+1. Run test suite: `go test ./...`
+
+It is recommended to use [Glitch](https://github.com/levicook/glitch)
+to automatically build, run the tests and `go vet`.
+
 1. Make sure $GOPATH/bin is on your path (you may need something like `export PATH=$PATH:/projects/goprojects/bin`)
+1. go get github.com/levicook/glitch
 1. Open a separate terminal window to your project directory and run the command `glitch`
 1. Write a test.
 1. Watch test fail.
