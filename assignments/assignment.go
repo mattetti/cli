@@ -14,7 +14,7 @@ type Assignment struct {
 	IsFresh bool `json:"fresh"`
 }
 
-func Save(dir string, a Assignment) (err error) {
+func (a *Assignment) Save(dir string) (err error) {
 	root := fmt.Sprintf("%s/%s/%s", dir, a.Track, a.Slug)
 
 	for name, text := range a.Files {

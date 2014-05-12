@@ -27,7 +27,7 @@ func TestSavingAssignment(t *testing.T) {
 		},
 	}
 
-	err = Save(tmpDir, assignment)
+	err = assignment.Save(tmpDir)
 	assert.NoError(t, err)
 
 	readme, err := ioutil.ReadFile(tmpDir + "/ruby/bob/README.md")

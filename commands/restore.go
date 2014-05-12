@@ -5,7 +5,6 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/exercism/cli/api"
-	"github.com/exercism/cli/assignments"
 	"github.com/exercism/cli/configuration"
 )
 
@@ -23,8 +22,7 @@ var Restore = func(c *cli.Context) {
 	}
 
 	for _, a := range assnmts {
-		err := assignments.Save(config.ExercismDirectory, a)
-		if err != nil {
+		if err := a.Save(config.ExercismDirectory); err != nil {
 			fmt.Println(err)
 		}
 	}
