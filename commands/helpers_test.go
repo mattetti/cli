@@ -84,7 +84,7 @@ var isTestTests = []struct {
 
 func TestIsTest(t *testing.T) {
 	for _, test := range isTestTests {
-		result := IsTest(test.filename)
+		result := isTest(test.filename)
 		if test.expected != result {
 			t.Errorf("Filename [%s] should be a test file but is not.", test.filename)
 		}

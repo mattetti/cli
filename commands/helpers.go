@@ -90,7 +90,7 @@ func askForConfigInfo() (c configuration.Config, err error) {
 	return
 }
 
-func IsTest(filename string) bool {
+func isTest(filename string) bool {
 	for _, ext := range testExtensions {
 		if strings.LastIndex(filename, ext) > 0 {
 			return true

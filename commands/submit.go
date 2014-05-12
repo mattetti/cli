@@ -38,7 +38,7 @@ var Submit = func(c *cli.Context) {
 	}
 	filename = absPath[len(exDir):]
 
-	if IsTest(filename) {
+	if isTest(filename) {
 		fmt.Println("It looks like this is a test, please enter an example file name.")
 		return
 	}
