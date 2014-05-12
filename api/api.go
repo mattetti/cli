@@ -37,10 +37,9 @@ type submitRequest struct {
 	Path string `json:"path"`
 }
 
-func FetchAssignments(config configuration.Config,
-	path string) (
-	as []assignments.Assignment,
-	err error) {
+func FetchAssignments(config configuration.Config, path string) (
+	as []*assignments.Assignment, err error) {
+
 	url := fmt.Sprintf("%s%s?key=%s", config.Hostname, path, config.ApiKey)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -78,14 +77,18 @@ func FetchAssignments(config configuration.Config,
 	var fr struct {
 		Assignments []assignments.Assignment
 	}
-
 	err = json.Unmarshal(body, &fr)
 	if err != nil {
 		err = fmt.Errorf("Error parsing API response: [%v]", err)
 		return
 	}
 
-	return fr.Assignments, err
+	// create a slice of pointers to avoid copying the structs
+	as = make([]*assignments.Assignment, len(fr.Assignments))
+	for i := range fr.Assignments {
+		as[i] = &fr.Assignments[i]
+	}
+	return as, err
 }
 
 func UnsubmitAssignment(config configuration.Config) (r string, err error) {
