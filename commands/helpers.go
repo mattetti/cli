@@ -90,9 +90,10 @@ func askForConfigInfo() (c configuration.Config, err error) {
 	return
 }
 
+// isTest checks if a filename refers to a test file.
 func isTest(filename string) bool {
 	for _, ext := range testExtensions {
-		if strings.LastIndex(filename, ext) > 0 {
+		if strings.HasSuffix(filename, ext) {
 			return true
 		}
 	}
