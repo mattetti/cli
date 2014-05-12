@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	// Mapping of languages and associated test file extensions
 	testExtensions = map[string]string{
 		"ruby":    "_test.rb",
 		"js":      ".spec.js",
@@ -37,7 +38,6 @@ func absolutePath(path string) (string, error) {
 func askForConfigInfo() (c configuration.Config, err error) {
 	var un, key, dir string
 	delim := "\r\n"
-
 	bio := bufio.NewReader(os.Stdin)
 
 	currentDir, err := os.Getwd()
@@ -86,7 +86,12 @@ func askForConfigInfo() (c configuration.Config, err error) {
 		return
 	}
 
-	c = configuration.Config{GithubUsername: un, ApiKey: key, ExercismDirectory: dir, Hostname: "http://exercism.io"}
+	c = configuration.Config{
+		GithubUsername:    un,
+		ApiKey:            key,
+		ExercismDirectory: dir,
+		Hostname:          "http://exercism.io",
+	}
 	return
 }
 
